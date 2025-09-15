@@ -5,14 +5,14 @@ import styles from './components/style.js';
 const request = async (callback) => {
   const response = await fetch('https://api.disneyapi.dev/character');
   const parsed = await response.json();
-  callback(parsed);
+  return parsed.data;
 }
 
 export default function App() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    request(data);
+    request(setData);
   }, [])
 
   return (
@@ -24,15 +24,15 @@ export default function App() {
       </View>
       <FlatList
         data={data}
-        keyExtractor={(item) => item.films.String()}
-        renderItem={(item) =>
+        keyExtractor={(item) => item._id}
+        renderItem={({item}) =>
           <Text style={styles.item}>
-            <Text>Filmes: {item.data.films}{'\n'}</Text>
-            <Text>Programa de TV: {item.data.tvShows}{'\n'}</Text>
-            <Text>Video games: {item.data.videoGames}{'\n'}</Text>
+            <Text>Filmes: {item.films[0]}{'\n'}</Text>
+            <Text>Programa de TV: {item.tvShows[0]}{'\n'}</Text>
+            <Text>Video games: {item.videoGames[0]}{'\n'}</Text>
           </Text>
         }>
       </FlatList >
-    </View>
+    </View >
   );
 }
